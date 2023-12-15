@@ -7,16 +7,17 @@ function init(){
     // this checks that our initial function runs.
     console.log("The Init() function ran");
 
-    // create dropdownmenu 
+    // create dropdownmenu using d3
     let dropDownMenu = d3.select('#selDataset');
 
-    // Fetch data from api and console log.
+    // Fetch data from api using d3 and console log the data.
     d3.json(url).then((data) => {
         console.log(`Data: ${data}`);
 
         // create an array of id names
         let names = data.names;
         
+        // Add names to dropdownmenu
         names.forEach((name) => {
             // console.log(name);
             dropDownMenu.append('option').text(name).property('value', name);
@@ -29,37 +30,33 @@ function init(){
         summary(name);
         bar(name);
         bubble(name);
-
     });
-    
-    summary(selectedID)
-    bar(selectedID)
-    bubble(selectedID)
-    
+        
 }
 
+// create a function that utilizes metadata information to create a summary of
+// all data available for the selected id
 function summary(selectedID){
-    // code that makes list, paragraph, text/linebreaks at id='sample-meta'
+    // Fetch data from api using d3.
     d3.json(url).then((data) => {
-        console.log(`Data: ${data}`);
 
         // retrieve an array of metadata objects
         let metadata = data.metadata;
 
         // filter based on value of the selection
         let selected = metadata.filter(i => i.id == selectedID);
-        //console.log('selected', selected);
-        let selectedData = metadata[0];
         
-        // clear html element
+        // get the first index of the array
+        let selectedData = selected[0];
+        
+        // clear html element using d3
         d3.select("#sample-metadata").html("");
 
-        // Use Object.entries to return an array of the given object's properties
+        // Use Object.entries to return an array of the each key/value
         Object.entries(selectedData).forEach(([key, value]) => {
+            // code to append and makes list, paragraph, text/linebreaks at id='sample-meta'
             d3.select("#sample-metadata").append('h5').text(`${key}: ${value}`);
         });
-        // checking to see if function is running
-        //console.log(`This function generates summary info of ${selectedID} `)
     });
 };
 

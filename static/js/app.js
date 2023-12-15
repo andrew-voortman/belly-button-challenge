@@ -25,13 +25,13 @@ function init(){
 
         // choose default id to run on page open/refresh
         let name = names[0];
-        
+
         // run functions to generate plots with default id = 940
         summary(name);
         bar(name);
         bubble(name);
     });
-        
+
 }
 
 // create a function that utilizes metadata information to create a summary of

@@ -81,17 +81,17 @@ function init(){
 
         // choose default id to run on page open/refresh
         let name = names[0];
-
+        // run functions to generate plots with default id = 940
         summary(name);
         bar(name);
         bubble(name);
         // gauge(name);
     });
 
-    // run functions to generate plots with default id = 940
-    summary(selectedID)
-    bar(selectedID)
-    bubble(selectedID)
+    
+    //summary(selectedID)
+    //bar(selectedID)
+    //bubble(selectedID)
     
 }
 
@@ -107,7 +107,7 @@ function summary(selectedID){
         let selected = metadata.filter(i => i.id == selectedID);
         console.log(selected);
         
-        let selectedData = metadata[0];
+        let selectedData = selected[0];
         
         // clear the 
         d3.select("#sample-metadata").html("");
@@ -193,7 +193,7 @@ function bubble(selectedID){
 }
 
 
-//function guage(selectedID){
+//function gauge(selectedID){
     // let metadata = data.metadata;
 
     // let metadataFilter = metadata.filter(i => i.id == selectedID);

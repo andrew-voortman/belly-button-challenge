@@ -23,10 +23,10 @@ function init(){
             dropDownMenu.append('option').text(name).property('value', name);
         });
 
-        // choose default id to run on page open/refresh
+        // choose the first sample as default id to run on page open/refresh
         let name = names[0];
 
-        // run functions to generate plots with default id = 940
+        // run functions to generate plots with default id
         summary(name);
         bar(name);
         bubble(name);
@@ -43,7 +43,7 @@ function summary(selectedID){
         // retrieve an array of metadata objects
         let metadata = data.metadata;
 
-        // filter based on value of the selection
+        // filter the data based on values of the selected id
         let selected = metadata.filter(i => i.id == selectedID);
         
         // get the first index of the array
@@ -59,17 +59,23 @@ function summary(selectedID){
         });
     });
 };
-
+// Create function that utilizes 'sample' information to create a bar chart at id='bar'
 function bar(selectedID){
-    // code that makes bar chart at id='bar'
+    
+    // Fetch data from api using d3.
     d3.json(url).then((data) => {
         
+        // create a variable that holds the samples array
         let samples = data.samples;
 
+        // filter the samples array based on the values of the selected id
         let sampleFilter = samples.filter(i => i.id == selectedID);
+
+        // create a variable to hold the first sample in the samples array
         let sample = sampleFilter[0];
         console.log('sample', sample);
 
+        // create variables to hold the otu_ids, otu_labels and sample_values.
         let otu_ids = sample.otu_ids;
         let otu_labels = sample.otu_labels;
         let sample_values = sample.sample_values;
@@ -77,38 +83,48 @@ function bar(selectedID){
         console.log('labels', otu_labels);
         console.log('sample values', sample_values);
 
+        // create the trace data for the bar chart
+        
+        
         let bartrace = [{
+            // use slice to limit the number of elements returned and reverse the order of the array
             x: sample_values.slice(0,10).reverse(),
+            // remember to add text here so that element isn't auto-converted to an int
             y: otu_ids.slice(0,10).map(ids => `OTU ${ids}`).reverse(),
             text: otu_labels.slice(0,10).reverse(),
             type: 'bar',
             orientation: 'h'
         }];
 
+        // create a title that references the selected id
         let layout = {
             title: `Top 10 OTUs for id: ${selectedID}`,
             
         };
-
+        // Create the bar chart using the trace and layout you just created.
         Plotly.newPlot('bar', bartrace, layout);
     });
-    // checking to see if function is running
-    //console.log(`This function generates bar chart of ${selectedID} `)
 }
 
 function bubble(selectedID){
     // code that makes scatter plot at id='bubble'
     d3.json(url).then((data) => {
         
+        // create a variable that holds the samples array
         let samples = data.samples;
 
+        //filter the samples array based on the value of the selected id
         let sampleFilter = samples.filter(i => i.id == selectedID);
+
+        // create a variable to hold the first sample in the samples array
         let sample = sampleFilter[0];
 
+        // create variables to hold the otu_ids, otu_labels and sample_values.
         let otu_ids = sample.otu_ids;
         let otu_labels = sample.otu_labels;
         let sample_values = sample.sample_values;
 
+        // create the trace for the bubble chart
         let bubbletrace = [{
             x: otu_ids,
             y: sample_values,
@@ -121,6 +137,7 @@ function bubble(selectedID){
             }
         }];
 
+        // create layout that adds a title to the chart referencing the selected id
         let layout = {
             title: `Amount of Bacteria Found for id: ${selectedID}`
         };
@@ -132,7 +149,7 @@ function bubble(selectedID){
 };
 
 // create a function that runs whenever the dropdown is changed
-// this function is in the HTML and is called with an input called 'this.value'
+// this function is in the HTML and is called with the 'this.value' input
 // that comes from the select element (dropdown (#selDataSet))
 function optionChanged(newID){
     // code that updates graphics

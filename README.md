@@ -41,7 +41,7 @@ My analysis and notes can be found within the app.js file and the following imag
 ## Contributors
 In order to complete this challenge I utilized/relied on:
 * google chrom web browser 'inspect' (DevTools) feature
-* multiple google searches, including: d3 utility, 
+* multiple google searches, including: d3 utility, javascript trace data, etc.
 
 
 ## Sources: 
